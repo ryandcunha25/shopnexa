@@ -19,6 +19,7 @@ router.post("/", protect, async (req, res) => {
 // Get all products with filters
 router.get("/", async (req, res) => {
   try {
+    console.log("Fetching products with filters...");
     const { category, minPrice, maxPrice } = req.query;
     let query = {};
     if (category) query.category = category;
