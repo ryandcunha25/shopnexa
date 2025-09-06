@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
@@ -8,9 +8,17 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 
 function App() {
+  const location = useLocation();
+
+  // pages where Navbar & Footer should be hidden
+  const hideLayoutRoutes = ["/login", "/signup"];
+
+  const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      {!shouldHideLayout && <Navbar />}
+
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -20,7 +28,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </main>
-      <Footer />
+
+      {!shouldHideLayout && <Footer />}
     </div>
   );
 }
