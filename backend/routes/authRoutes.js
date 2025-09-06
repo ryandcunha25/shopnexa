@@ -7,40 +7,47 @@ const router = express.Router();
 
 // Signup
 router.post("/signup", async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
+    console.log("New signup request received");
+    try {
+        const { firstName, lastName, email, phone, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ msg: "User already exists" });
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            console.log("Signup error: User already exists with email", email);
+            return res.status(400).json({ msg: "User already exists" })
+        };
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = await User.create({ name, email, password: hashedPassword });
+        const user = await User.create({ firstName, lastName, email, phone, password: hashedPassword });
+        console.log("User created:", user);
 
-    res.status(201).json({ msg: "User created successfully", user });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
+        res.status(201).json({ msg: "User created successfully", user });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
 });
 
 // Login
 router.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    try {
+        console.log("Login request received");
+        const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ msg: "Invalid credentials" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "8h" });
+        console.log("User logged in:", user);
 
-    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
-  } catch (err) {
-    res.status(500).json({ msg: err.message });
-  }
+        res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
 });
 
 export default router;
