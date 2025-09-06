@@ -1,22 +1,22 @@
 import express from "express";
-import Item from "../models/Item.js";
+import Product from "../models/Product.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-// Create item (admin feature)
+// Create product (admin feature)
 router.post("/", protect, async (req, res) => {
   try {
     const { name, price, category, description, image } = req.body;
-    const item = new Item({ name, price, category, description, image });
-    await item.save();
-    res.status(201).json(item);
+    const product = new Product({ name, price, category, description, image });
+    await product.save();
+    res.status(201).json(product);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// Get all items with filters
+// Get all products with filters
 router.get("/", async (req, res) => {
   try {
     const { category, minPrice, maxPrice } = req.query;
@@ -28,28 +28,28 @@ router.get("/", async (req, res) => {
       if (maxPrice) query.price.$lte = Number(maxPrice);
     }
 
-    const items = await Item.find(query);
-    res.json(items);
+    const products = await Product.find(query);
+    res.json(products);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// Update item
+// Update product
 router.put("/:id", protect, async (req, res) => {
   try {
-    const updated = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updated = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }
 });
 
-// Delete item
+// Delete product
 router.delete("/:id", protect, async (req, res) => {
   try {
-    await Item.findByIdAndDelete(req.params.id);
-    res.json({ msg: "Item deleted" });
+    await Product.findByIdAndDelete(req.params.id);
+    res.json({ msg: "Product deleted" });
   } catch (err) {
     res.status(500).json({ msg: err.message });
   }

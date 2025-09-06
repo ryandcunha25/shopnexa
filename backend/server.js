@@ -4,7 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 
 import authRoutes from "./routes/authRoutes.js";
-import itemRoutes from "./routes/itemRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 
 dotenv.config();
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/shopnexa_api/auth", authRoutes);
-app.use("/shopnexa_api/items", itemRoutes);
+app.use("/shopnexa_api/products", productRoutes);
 app.use("/shopnexa_api/cart", cartRoutes);
 
 const PORT = process.env.PORT || 5000;
