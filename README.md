@@ -2,6 +2,7 @@
 
 ShopNexa is a full-stack single page e-commerce application built using React.js, Node.js, Express.js, and MongoDB.  
 It allows users to browse products, add them to their cart, and complete purchases securely.
+
 ---
 
 ## Tech Stack Used
