@@ -223,7 +223,7 @@ function Cart() {
                                         <img
                                             src={item.image}
                                             alt={item.name}
-                                            className="w-24 h-24 object-cover rounded-xl shadow-md"
+                                            className="w-32 h-32 object-cover rounded-xl shadow-md"
                                         />
                                         <div className="absolute -top-2 -right-2">
                                             <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs px-2 py-1 rounded-full font-medium">

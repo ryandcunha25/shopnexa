@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ShoppingCart, Star, Eye, Heart, Zap, ArrowRight, Minus, Plus } from "lucide-react";
+import { ShoppingCart, Star, Eye, Check, Zap, ArrowRight, Minus, Plus } from "lucide-react";
 
 function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
     const [isWishlisted, setIsWishlisted] = useState(false);
     const [imageLoaded, setImageLoaded] = useState(false);
-    
+
     const isInCart = cartItems?.some(item => item.productId === product._id) || false;
     const cartItem = cartItems?.find(item => item.productId === product._id);
 
@@ -26,7 +26,7 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
         const stars = [];
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 !== 0;
-        
+
         for (let i = 0; i < fullStars; i++) {
             stars.push(<Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />);
         }
@@ -54,7 +54,7 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
                         onLoad={() => setImageLoaded(true)}
                         className={`w-full h-full object-cover transition-all duration-700 ${imageLoaded ? 'opacity-100' : 'opacity-0'} group-hover:scale-110`}
                     />
-                    
+
                     {/* Stock Overlay */}
                     {!product.inStock && (
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-800/60 to-transparent flex items-center justify-center backdrop-blur-sm">
@@ -69,16 +69,6 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
 
                     {/* Action Buttons */}
                     <div className="absolute top-4 right-4 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                        <button
-                            onClick={handleWishlistToggle}
-                            className={`p-3 rounded-2xl backdrop-blur-md shadow-lg border border-white/20 transition-all duration-300 transform hover:scale-110 ${
-                                isWishlisted 
-                                    ? 'bg-red-500/90 text-white' 
-                                    : 'bg-white/90 hover:bg-white text-slate-700 hover:text-red-500'
-                            }`}
-                        >
-                            <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current' : ''}`} />
-                        </button>
                         <button
                             onClick={() => onViewDetails(product)}
                             className="p-3 rounded-2xl bg-white/90 backdrop-blur-md hover:bg-white text-slate-700 hover:text-blue-600 shadow-lg border border-white/20 transition-all duration-300 transform hover:scale-110"
@@ -155,28 +145,10 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
                 <div className="pt-2">
                     {isInCart ? (
                         <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-200 rounded-2xl p-4">
-                            <div className="flex items-center justify-between">
-                                <span className="text-sm font-semibold text-green-700 flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                    In Cart
-                                </span>
-                                <div className="flex items-center gap-3">
-                                    <button
-                                        onClick={() => onAddToCart(product, 'decrease')}
-                                        className="w-9 h-9 rounded-xl bg-white border-2 border-green-200 text-green-600 flex items-center justify-center hover:bg-green-50 hover:border-green-300 transition-all duration-200 transform hover:scale-105"
-                                    >
-                                        <Minus className="w-4 h-4" />
-                                    </button>
-                                    <span className="font-bold text-lg text-slate-800 min-w-[2rem] text-center">
-                                        {cartItem?.quantity || 1}
-                                    </span>
-                                    <button
-                                        onClick={() => onAddToCart(product, 'increase')}
-                                        className="w-9 h-9 rounded-xl bg-green-500 text-white flex items-center justify-center hover:bg-green-600 transition-all duration-200 transform hover:scale-105 shadow-lg"
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                    </button>
-                                </div>
+                            <div className="flex items-center justify-center gap-3">
+                                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span className="text-lg font-bold text-green-700">Added to Cart</span>
+                                <Check className="w-5 h-5 text-green-600" />
                             </div>
                         </div>
                     ) : (
