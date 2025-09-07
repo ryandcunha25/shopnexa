@@ -36,6 +36,8 @@ import {
   Gamepad2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+
 
 function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -252,7 +254,7 @@ function Home() {
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     // Handle newsletter subscription
-    alert(`Thanks for subscribing with email: ${email}`);
+    toast.success(`Thanks for subscribing with email: ${email}`);
     setEmail('');
   };
 

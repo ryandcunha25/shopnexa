@@ -14,6 +14,7 @@ import {
     CreditCard,
     Tag
 } from "lucide-react";
+import toast from 'react-hot-toast';
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -93,13 +94,13 @@ function Cart() {
 
             if (res.status == 200) {
                 setCartItems((items) => items.filter((item) => item._id !== id));
-                alert("Item removed from cart");
+                toast.success("Item removed from cart");
             } else {
-                alert(data.msg || "Failed to remove item");
+                toast.error(data.msg || "Failed to remove item");
             }
         } catch (error) {
             console.error("Error removing item:", error);
-            alert("Something went wrong");
+            toast.error("Something went wrong");
         }
     };
 

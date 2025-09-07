@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Search, Filter, Grid3X3, List, X, ChevronDown, Star } from 'lucide-react';
 import axios from "axios";
 import ProductCard from "../components/ProductCard.jsx";
+import toast from 'react-hot-toast';
 
 
 function Products() {
@@ -132,10 +133,10 @@ function Products() {
                     },
                 });
                 console.log("Added to cart:", response.data);
-                alert("Product added to cart!");
+                toast.success("Product added to cart!");
             } catch (error) {
                 console.error("Error adding to cart:", error);
-                alert("Failed to add product to cart");
+                toast.error("Failed to add product to cart");
             }
         }
     };

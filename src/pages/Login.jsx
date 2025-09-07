@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from 'react-hot-toast';
+
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -23,14 +25,14 @@ function Login() {
 
             if (res.ok) {
                 localStorage.setItem("token", data.token);
-                alert("Login successful!");
+                toast.success("Login successful!");
                 window.location.href = "/";
             } else {
-                alert(data.message || "Invalid credentials");
+                toast.error(data.message || "Invalid credentials");
             }
         } catch (error) {
             console.error("Error logging in:", error);
-            alert("Something went wrong. Please try again.");
+            toast.error("Something went wrong. Please try again.");
         } finally {
             setIsLoading(false);
         }

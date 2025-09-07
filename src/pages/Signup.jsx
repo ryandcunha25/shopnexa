@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from 'react-hot-toast';
+
 
 function Signup() {
     const [form, setForm] = useState({
@@ -22,12 +24,12 @@ function Signup() {
     const phoneRegex = /^[0-9]{10}$/;
 
     if (!emailRegex.test(form.email)) {
-        alert("Please enter a valid email address.");
+        toast.error("Please enter a valid email address.");
         return;
     }
 
     if (!phoneRegex.test(form.phone)) {
-        alert("Please enter a valid 10-digit phone number.");
+        toast.error("Please enter a valid 10-digit phone number.");
         return;
     }
 
@@ -40,14 +42,14 @@ function Signup() {
 
         const data = await res.json();
         if (res.ok) {
-            alert("Signup successful! Please login.");
+            toast.success("Signup successful! Please login.");
             window.location.href = "/login";
         } else {
-            alert(data.message || "Signup failed");
+            toast.error(data.message || "Signup failed");
         }
     } catch (error) {
         console.error(error);
-        alert("Something went wrong!");
+        toast.error("Something went wrong!");
     }
 };
 

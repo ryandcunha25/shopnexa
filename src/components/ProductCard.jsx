@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Star, Eye, Check, Zap, ArrowRight, Minus, Plus } from "lucide-react";
+import toast from 'react-hot-toast';
+
 
 function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
     const [isWishlisted, setIsWishlisted] = useState(false);
@@ -11,7 +13,7 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
     const handleAddToCart = async () => {
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Please log in to add items to your cart.");
+            toast.error("Please log in to add items to your cart.");
             return;
         }
         onAddToCart(product);
