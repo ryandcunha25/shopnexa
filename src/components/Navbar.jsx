@@ -45,9 +45,6 @@ function Navbar() {
             >
               <ShoppingBag className="w-5 h-5" />
               <span className="font-semibold">Cart</span>
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-xs font-bold animate-pulse">
-                3
-              </div>
             </Link>
             
             <Link 
