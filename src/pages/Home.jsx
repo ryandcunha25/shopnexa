@@ -41,6 +41,7 @@ function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [email, setEmail] = useState('');
   const [products, setProducts] = useState([]);
+  const [featuredProducts, setFeaturedProducts] = useState([]);
   const [categories, setCategories] = useState([]);
 
 
@@ -79,8 +80,8 @@ function Home() {
       try {
         const response = await fetch(backendUrl + "/shopnexa_api/products");
         const data = await response.json();
-        // setProducts(data)
-        console.log(data)
+        setProducts(data)
+
         // Extract unique categories with counts
         const categoryMap = {};
 
@@ -92,17 +93,21 @@ function Home() {
           }
         });
 
-
-        // Convert to array of objects
         const categoriesWithCounts = Object.keys(categoryMap).map(category => ({
           name: category,
           count: categoryMap[category]
         }));
 
-        console.log(categoriesWithCounts)
-
         setCategories(categoriesWithCounts);
-        console.log(categories)
+
+        // Sort by ratings 
+        const topRatedProducts = data
+          .filter(product => product.ratings)
+          .sort((a, b) => b.ratings - a.ratings)
+          .slice(0, 4);
+
+        setFeaturedProducts(topRatedProducts);
+        console.log(featuredProducts)
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -153,52 +158,52 @@ function Home() {
   // ];
 
   // Featured products data
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Premium Wireless Headphones",
-      price: 15999,
-      originalPrice: 22999,
-      rating: 4.8,
-      reviews: 1247,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
-      badge: "Best Seller",
-      badgeColor: "bg-green-500"
-    },
-    {
-      id: 2,
-      name: "Smart Fitness Watch",
-      price: 12999,
-      originalPrice: 18999,
-      rating: 4.9,
-      reviews: 892,
-      image: "https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=300&fit=crop",
-      badge: "Trending",
-      badgeColor: "bg-orange-500"
-    },
-    {
-      id: 3,
-      name: "Professional Camera",
-      price: 45999,
-      originalPrice: 59999,
-      rating: 4.7,
-      reviews: 634,
-      image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=300&fit=crop",
-      badge: "Featured",
-      badgeColor: "bg-purple-500"
-    },
-    {
-      id: 4,
-      name: "Gaming Laptop",
-      price: 89999,
-      originalPrice: 109999,
-      rating: 4.6,
-      reviews: 423,
-      image: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400&h=300&fit=crop",
-      badge: "Hot Deal",
-      badgeColor: "bg-red-500"
-    }
-  ];
+  // const featuredProducts = [
+  //   {
+  //     id: 1,
+  //     name: "Premium Wireless Headphones",
+  //     price: 15999,
+  //     originalPrice: 22999,
+  //     rating: 4.8,
+  //     reviews: 1247,
+  //     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop",
+  //     badge: "Best Seller",
+  //     badgeColor: "bg-green-500"
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Smart Fitness Watch",
+  //     price: 12999,
+  //     originalPrice: 18999,
+  //     rating: 4.9,
+  //     reviews: 892,
+  //     image: "https://images.unsplash.com/photo-1544117519-31a4b719223d?w=400&h=300&fit=crop",
+  //     badge: "Trending",
+  //     badgeColor: "bg-orange-500"
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Professional Camera",
+  //     price: 45999,
+  //     originalPrice: 59999,
+  //     rating: 4.7,
+  //     reviews: 634,
+  //     image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=300&fit=crop",
+  //     badge: "Featured",
+  //     badgeColor: "bg-purple-500"
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Gaming Laptop",
+  //     price: 89999,
+  //     originalPrice: 109999,
+  //     rating: 4.6,
+  //     reviews: 423,
+  //     image: "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400&h=300&fit=crop",
+  //     badge: "Hot Deal",
+  //     badgeColor: "bg-red-500"
+  //   }
+  // ];
 
   // Testimonials data
   const testimonials = [
@@ -208,7 +213,7 @@ function Home() {
       role: "Verified Buyer",
       content: "Amazing quality products and super fast delivery! ShopNexa has become my go-to shopping destination.",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b977?w=100&h=100&fit=crop&crop=face"
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
     },
     {
       id: 2,
@@ -257,7 +262,7 @@ function Home() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="relative h-[600px] md:h-[700px]">
+        <div className="relative h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]">
           {heroBanners.map((banner, index) => (
             <div
               key={banner.id}
@@ -274,29 +279,29 @@ function Home() {
                 <div className="absolute inset-0 bg-black/20"></div>
               </div>
 
-              <div className="relative z-10 max-w-7xl mx-auto px-4 h-full flex items-center">
-                <div className="text-white max-w-2xl">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Zap className="w-6 h-6 text-yellow-400" />
-                    <span className="text-yellow-400 font-semibold">Limited Time Offer</span>
+              <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
+                <div className="text-white max-w-xs sm:max-w-lg md:max-w-2xl">
+                  <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-yellow-400" />
+                    <span className="text-yellow-400 font-semibold text-sm sm:text-base">Limited Time Offer</span>
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 sm:mb-5 md:mb-6 leading-tight">
                     {banner.title}
                   </h1>
-                  <h2 className="text-2xl md:text-4xl font-bold mb-4 text-blue-100">
+                  <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-3 sm:mb-4 text-blue-100">
                     {banner.subtitle}
                   </h2>
-                  <p className="text-xl mb-8 text-blue-50 max-w-lg">
+                  <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-7 md:mb-8 text-blue-50 max-w-xs sm:max-w-sm md:max-w-lg">
                     {banner.description}
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-white text-slate-900 font-bold py-4 px-8 rounded-2xl hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center gap-3 justify-center">
-                      <ShoppingBag className="w-6 h-6" />
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <button className="bg-white text-slate-900 font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl sm:rounded-2xl hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-2xl flex items-center gap-2 sm:gap-3 justify-center text-sm sm:text-base">
+                      <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />
                       {banner.cta}
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </button>
-                    <button className="border-2 border-white text-white font-bold py-4 px-8 rounded-2xl hover:bg-white hover:text-slate-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-3 justify-center">
-                      <Gift className="w-6 h-6" />
+                    <button className="border-2 border-white text-white font-bold py-3 px-6 sm:py-4 sm:px-8 rounded-xl sm:rounded-2xl hover:bg-white hover:text-slate-900 transition-all duration-300 transform hover:scale-105 flex items-center gap-2 sm:gap-3 justify-center text-sm sm:text-base">
+                      <Gift className="w-5 h-5 sm:w-6 sm:h-6" />
                       View Deals
                     </button>
                   </div>
@@ -309,24 +314,24 @@ function Home() {
         {/* Navigation Buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300 z-20"
+          className="absolute left-2 sm:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-2 sm:p-3 rounded-full hover:bg-white/30 transition-all duration-300 z-20"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-3 rounded-full hover:bg-white/30 transition-all duration-300 z-20"
+          className="absolute right-2 sm:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-md text-white p-2 sm:p-3 rounded-full hover:bg-white/30 transition-all duration-300 z-20"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {/* Slide Indicators */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+        <div className="absolute bottom-4 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 z-20">
           {heroBanners.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${index === currentSlide ? 'bg-white scale-125' : 'bg-white/50'
                 }`}
             />
           ))}
@@ -452,27 +457,25 @@ function Home() {
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-4 h-4 ${i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
+                          className={`w-4 h-4 ${i < Math.floor(product.ratings) ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`}
                         />
                       ))}
                     </div>
                     <span className="text-sm font-medium text-slate-700">
-                      {product.rating} ({product.reviews})
+                      {product.ratings}
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-3 mb-4">
+                  <div className="flex items-center gap-3">
                     <span className="text-2xl font-black text-slate-900">
-                      ₹{product.price.toLocaleString()}
+                      ₹{product.price}
                     </span>
-                    <span className="text-lg text-slate-400 line-through">
-                      ₹{product.originalPrice.toLocaleString()}
-                    </span>
+                    {/* <span className="text-lg text-slate-400 line-through">
+                      ₹{product.originalPrice}
+                    </span> */}
                   </div>
 
-                  <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-2xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                    Add to Cart
-                  </button>
+
                 </div>
               </div>
             ))}
@@ -571,41 +574,41 @@ function Home() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4">
-          <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 rounded-3xl overflow-hidden shadow-2xl">
-            <div className="relative p-12 md:p-16">
+      <section className="py-12 md:py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl md:shadow-2xl">
+            <div className="relative p-6 sm:p-8 md:p-12 lg:p-16">
               <div className="absolute inset-0 bg-black/10"></div>
               <div className="relative z-10 text-center text-white">
-                <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-8">
-                  <Mail className="w-10 h-10" />
+                <div className="w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8">
+                  <Mail className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10" />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black mb-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 md:mb-6">
                   Stay Updated
                 </h2>
-                <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                <p className="text-lg sm:text-xl mb-6 md:mb-8 opacity-90 max-w-2xl mx-auto">
                   Subscribe to our newsletter and get exclusive deals, new arrivals, and shopping tips delivered to your inbox!
                 </p>
 
                 <form onSubmit={handleNewsletterSubmit} className="max-w-md mx-auto">
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
                       required
-                      className="flex-1 px-6 py-4 rounded-2xl text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-4 focus:ring-white/30"
+                      className="flex-1 px-4 sm:px-6 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-slate-900 placeholder-slate-500 focus:outline-none focus:ring-2 sm:focus:ring-4 focus:ring-white/30 text-base sm:text-lg"
                     />
                     <button
                       type="submit"
-                      className="bg-white text-blue-600 font-bold px-8 py-4 rounded-2xl hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center gap-2"
+                      className="bg-white text-blue-600 font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 shadow-md sm:shadow-lg flex items-center justify-center gap-2 text-base sm:text-lg"
                     >
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                       Subscribe
                     </button>
                   </div>
-                  <p className="text-sm opacity-75 mt-4">
+                  <p className="text-xs sm:text-sm opacity-75 mt-3 sm:mt-4">
                     No spam, unsubscribe at any time
                   </p>
                 </form>
