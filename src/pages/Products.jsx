@@ -17,7 +17,7 @@ function Products() {
     const [showFilters, setShowFilters] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const productsPerPage = 6;
+    const productsPerPage = 8;
 
 
     const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
