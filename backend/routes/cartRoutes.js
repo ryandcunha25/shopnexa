@@ -17,9 +17,12 @@ router.get("/", protect, async (req, res) => {
             category: item.productId.category,
             description: item.productId.description,
             image: item.productId.image,
+            ratings: item.productId.ratings,
+            inStock: item.productId.inStock,
             quantity: item.quantity,
             addedToCart: item.createdAt 
         }));
+        console.log(cartItems);
         res.status(200).json({
             success: true,
             items: cartItems,
