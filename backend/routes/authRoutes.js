@@ -42,6 +42,17 @@ router.post("/login", async (req, res) => {
         if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "8h" });
+
+        // Environment-based security settings
+        const isProduction = process.env.NODE_ENV === "production";
+
+        // Store token in HttpOnly cookie
+        res.cookie("authToken", token, {
+            httpOnly: true,                               // JS can’t access this cookie
+            secure: isProduction,                         // HTTPS only in production
+            sameSite: isProduction ? "None" : "Lax",      // Allow cross-site in prod (for your frontend)
+            maxAge: 8 * 60 * 60 * 1000                    // 8 hours
+        });
         console.log("User logged in:", user);
 
         res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
