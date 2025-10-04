@@ -30,6 +30,7 @@ router.get("/", async (req, res) => {
     }
 
     const products = await Product.find(query);
+    console.log(`Found ${products.length} products`);
     res.json(products);
   } catch (err) {
     res.status(500).json({ msg: err.message });
