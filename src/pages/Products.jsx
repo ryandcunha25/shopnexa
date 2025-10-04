@@ -364,7 +364,7 @@ function Products() {
             </div>
 
             {/* Products Grid */}
-            <div className="max-w-7xl mx-auto px-4 py-8">
+            <div className="my-products max-w-7xl mx-auto px-4 py-8">
                 <div className="flex justify-between items-center mb-6">
                     <p className="text-gray-600">
                         Showing {currentProducts.length} of {filteredProducts.length} products
