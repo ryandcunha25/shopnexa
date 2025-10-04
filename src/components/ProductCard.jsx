@@ -39,7 +39,7 @@ function ProductCard({ product, cartItems, onAddToCart, onViewDetails }) {
     };
 
     return (
-        <div className="group relative bg-gradient-to-br from-white via-slate-50/50 to-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-slate-200/60 hover:border-slate-300/80 transform hover:-translate-y-2">
+        <div className="my-product-cards group relative bg-gradient-to-br from-white via-slate-50/50 to-white rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-slate-200/60 hover:border-slate-300/80 transform hover:-translate-y-2">
             {/* Decorative Elements */}
             <div className="absolute -top-2 -right-2 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="absolute -bottom-2 -left-2 w-16 h-16 bg-gradient-to-tr from-pink-400/20 to-orange-400/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
