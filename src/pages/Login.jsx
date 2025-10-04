@@ -1,12 +1,14 @@
 import { useState } from "react";
 import toast from 'react-hot-toast';
-
+import { pushUserLogin } from "../gtm/gtmEvents";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
@@ -19,6 +21,7 @@ function Login() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
+                credentials: "include"
             });
 
             const data = await res.json();
@@ -26,7 +29,8 @@ function Login() {
             if (res.ok) {
                 localStorage.setItem("token", data.token);
                 toast.success("Login successful!");
-                window.location.href = "/";
+                pushUserLogin(data.user.id);
+                navigate("/");
             } else {
                 toast.error(data.message || "Invalid credentials");
             }

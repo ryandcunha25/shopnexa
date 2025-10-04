@@ -3,6 +3,8 @@ import { Search, Filter, Grid3X3, List, X, ChevronDown, Star } from 'lucide-reac
 import axios from "axios";
 import ProductCard from "../components/ProductCard.jsx";
 import toast from 'react-hot-toast';
+import { pushAddToCart } from "../gtm/gtmEvents.js";
+
 
 
 function Products() {
@@ -132,6 +134,8 @@ function Products() {
                         Authorization: `Bearer ${token}`,
                     },
                 });
+                pushAddToCart(product);
+                console.log(product)
                 console.log("Added to cart:", response.data);
                 toast.success("Product added to cart!");
             } catch (error) {
