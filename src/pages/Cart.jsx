@@ -17,6 +17,7 @@ import {
 import toast from 'react-hot-toast';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { pushPurchase, pushRemoveFromCart } from "../gtm/gtmEvents";
 
 function Cart() {
     const [cartItems, setCartItems] = useState([]);
@@ -94,6 +95,7 @@ function Cart() {
 
             if (res.status == 200) {
                 setCartItems((items) => items.filter((item) => item._id !== id));
+                pushRemoveFromCart({ id });
                 toast.success("Item removed from cart");
             } else {
                 toast.error(data.msg || "Failed to remove item");
@@ -103,6 +105,36 @@ function Cart() {
             toast.error("Something went wrong");
         }
     };
+
+    const handleClick = () => {
+        // Ask for confirmation
+        const confirmPurchase = window.confirm("Do you want to purchase these products?");
+
+        if (confirmPurchase) {
+            // Perform the purchase
+            // handlePurchase(cartItems);
+            console.log('confirming the purchase...')
+            pushPurchase({
+                order_id: `ORDER-${Math.floor(Math.random() * 1000000)}`,
+                total: total,
+                currency: 'INR',
+                items: cartItems.map(item => ({
+                    id: item._id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    category: item.category
+                }))
+            });
+
+            // Show success toast
+            toast.success("Purchase successful!");
+        } else {
+            // Show cancellation toast
+            toast("Purchase cancelled.");
+        }
+    };
+
 
 
     const applyCoupon = () => {
@@ -378,7 +410,7 @@ function Cart() {
                             </div>
 
                             {/* Checkout Button */}
-                            <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-3 mb-4">
+                            <button onClick={handleClick} className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-2xl transition-all duration-300 transform hover:scale-[1.02] shadow-lg hover:shadow-xl flex items-center justify-center gap-3 mb-4">
                                 Proceed to Checkout
                                 <ArrowRight className="w-5 h-5" />
                             </button>
