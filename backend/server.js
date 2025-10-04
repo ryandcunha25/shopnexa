@@ -13,7 +13,10 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: "https://shopnexa-rd.vercel.app", 
+  origin: [
+    "https://shopnexa-rd.vercel.app",
+    "http://localhost:3000"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
